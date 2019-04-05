@@ -1,0 +1,95 @@
+swagger: "2.0"
+info:
+  description: "Micro-serviço da base A"
+  version: "1.0.0"
+  title: "Swagger - Micro-serviço"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "paulorfreitasjr@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "desafio.swagger.io"
+basePath: "/v1"
+tags:
+- name: "pessoafisica"
+  description: "Pessoa física"
+schemes:
+- "https"
+- "http"
+paths:
+  /pessoafisica:
+    get:
+      tags:
+      - "pessoafisica"
+      summary: "Retorna os dados de uma pessoa física"
+      operationId: "cpf"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cpf"
+        in: "query"
+        description: "CPF para consulta"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "object"
+            items:
+              $ref: '#/definitions/PessoaFisica'
+        400:
+          description: "Invalid cpf value"
+        401:
+          description: "Unauthorized"
+      security:
+      - Bearer: []
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  PessoaFisica:
+    type: "object"
+    required:
+    - "cpf"
+    - "nome"
+    - "endereco"
+    properties:
+      cpf:
+        type: "string"
+      nome:
+        type: "string"
+      endereco:
+        type: "object"
+        properties:
+          logradouro:
+            type: "string"
+          numero:
+            type: "integer"
+          cidade:
+            type: "string"
+          bairro:
+            type: "string"
+          complemento:
+            type: "string"
+      listaDividas:
+        type: "array"
+        items:
+          type: object
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
